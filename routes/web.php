@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\MahasiswaController as AdminMahasiswaController;
+use App\Http\Controllers\Mahasiswa\DashboardController as MahasiswaDashboardController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,15 +34,17 @@ Route::middleware('auth')->group(function () {
 
     // Admin Routes
     Route::middleware('role:admin')->prefix('admin')->group(function () {
-        Route::get('/dashboard', function () {
-            return view('admin.dashboard');
-        })->name('admin.dashboard');
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+
+        Route::prefix('mahasiswa')->group(function () {
+            Route::get('/', [AdminMahasiswaController::class, 'index'])->name('admin.mahasiswa');
+            Route::get('/show/{id}',[AdminMahasiswaController::class, 'show'])->name('admin.mahasiswa.show');
+            Route::post('/update',[AdminMahasiswaController::class,'update'])->name('admin.mahasiswa.update');
+        });
     });
 
     // Mahasiswa Routes
     Route::middleware('role:mahasiswa')->prefix('mahasiswa')->group(function () {
-        Route::get('/dashboard', function () {
-            return view('mahasiswa.dashboard');
-        })->name('mahasiswa.dashboard');
+        Route::get('/dashboard', [MahasiswaDashboardController::class, 'index'])->name('mahasiswa.dashboard');
     });
 });

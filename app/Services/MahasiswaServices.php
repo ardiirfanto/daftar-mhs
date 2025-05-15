@@ -18,9 +18,10 @@ class MahasiswaServices extends AuthServices implements AuthInterface
 
     public function login($user): RedirectResponse
     {
-        $authService = new AuthServices();
-        $authService->setUser($user);
-        $authService->setSessionMahasiswa();
+        // Fungsi Inheritance dengan AuthServices
+        $this->setUser($user);
+        $this->setSessionMahasiswa();
+
         return redirect()
             ->intended('mahasiswa.dashboard')
             ->with('success', 'Anda Berhasil Login sebagai Mahasiswa');
@@ -66,9 +67,10 @@ class MahasiswaServices extends AuthServices implements AuthInterface
 
             // Proses login setelah pendaftaran berhasil
             Auth::login($user);
-            $authService = new AuthServices();
-            $authService->setUser($user);
-            $authService->setSessionMahasiswa();
+
+            // Fungsi Inheritance dengan AuthServices
+            $this->setUser($user);
+            $this->setSessionMahasiswa();
 
             return redirect()->intended('mahasiswa.dashboard')
                 ->with('success', 'Pendaftaran skripsi berhasil');
