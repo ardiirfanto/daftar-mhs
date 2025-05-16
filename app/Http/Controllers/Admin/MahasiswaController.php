@@ -9,11 +9,20 @@ use Illuminate\Container\Attributes\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Controller untuk manajemen data mahasiswa oleh admin.
+ * Menangani tampilan daftar, detail, update status, hapus, dan unduh data mahasiswa.
+ */
 class MahasiswaController extends Controller
 {
+    /**
+     * Menampilkan daftar seluruh mahasiswa.
+     *
+     * @return \Illuminate\View\View
+     */
     public function index()
     {
-        $mahasiswa = Mahasiswa::with(['user', 'prodi.fakultas'])->get(); // Mengambil semua data mahasiswa
+        $mahasiswa = Mahasiswa::with(['user', 'prodi.fakultas'])->get();
         $params = [
             'mahasiswa' => $mahasiswa,
         ];
@@ -21,20 +30,29 @@ class MahasiswaController extends Controller
         return view('admin.mahasiswa.index', $params);
     }
 
+    /**
+     * Menampilkan detail mahasiswa berdasarkan ID terenkripsi.
+     *
+     * @param string $id
+     * @return \Illuminate\View\View
+     */
     public function show($id)
     {
-
         $id = decrypt($id);
-
         $mahasiswa = Mahasiswa::with(['user', 'prodi.fakultas'])
-            ->find($id); // Mengambil semua detil mahasiswa
-
+            ->find($id);
         $params = [
             'mahasiswa' => $mahasiswa,
         ];
         return view('admin.mahasiswa.show', $params);
     }
 
+    /**
+     * Memperbarui status skripsi mahasiswa.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function update(Request $request)
     {
         $id = decrypt($request->id);
@@ -51,6 +69,12 @@ class MahasiswaController extends Controller
         return redirect()->back()->with('success', 'Status skripsi berhasil diperbarui.');
     }
 
+    /**
+     * Menghapus data mahasiswa beserta user terkait.
+     *
+     * @param string $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function delete($id)
     {
         DB::beginTransaction();
@@ -70,9 +94,14 @@ class MahasiswaController extends Controller
         }
     }
 
+    /**
+     * Mengunduh daftar mahasiswa dalam format PDF.
+     *
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
     public function downloadDaftarMahasiswa()
     {
-        $downloadServices = new DownloadServices(Auth::user()); // Menggunakan dependency injection untuk mendapatkan objek user yang sedang login
+        $downloadServices = new DownloadServices(Auth::user());
         return $downloadServices->download();
     }
 }

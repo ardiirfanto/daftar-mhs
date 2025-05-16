@@ -5,6 +5,11 @@ namespace App\Helpers;
 class Render
 {
 
+    /**
+     * Helper untuk merender status skripsi menjadi warna tertentu.
+     *
+     * @package App\Helpers
+     */
     public static function status($text)
     {
         switch ($text) {

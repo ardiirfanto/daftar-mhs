@@ -4,13 +4,20 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Mahasiswa;
-use Illuminate\Http\Request;
 
+/**
+ * Controller untuk dashboard admin.
+ * Menampilkan ringkasan data penting seperti jumlah mahasiswa.
+ */
 class DashboardController extends Controller
 {
+    /**
+     * Menampilkan halaman dashboard admin dengan jumlah mahasiswa.
+     *
+     * @return \Illuminate\View\View
+     */
     public function index()
     {
-
         $jmlMhs = Mahasiswa::count();
 
         $params = [

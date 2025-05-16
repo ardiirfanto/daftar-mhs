@@ -10,9 +10,18 @@ use Symfony\Component\HttpFoundation\Response;
 class CheckRole
 {
     /**
-     * Handle an incoming request.
+     * Middleware untuk memeriksa peran pengguna sebelum mengakses suatu route.
+     * Hanya mengizinkan akses jika peran sesuai.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @package App\Http\Middleware
+     */
+    /**
+     * Menangani request yang masuk dan memeriksa peran pengguna.
+     *
+     * @param  Request $request Request yang masuk
+     * @param  \Closure $next Fungsi berikutnya
+     * @param  string $role Nama peran yang diizinkan
+     * @return Response Redirect atau response berikutnya
      */
     public function handle(Request $request, Closure $next, string $role): Response
     {

@@ -11,10 +11,16 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
+/**
+ * Controller untuk autentikasi pengguna (login, register, logout).
+ * Menangani proses login, registrasi, dan logout untuk admin maupun mahasiswa.
+ */
 class AuthController extends Controller
 {
     /**
-     * Menampilkan halaman login
+     * Menampilkan halaman login.
+     *
+     * @return \Illuminate\View\View
      */
     public function showLoginForm()
     {
@@ -22,7 +28,11 @@ class AuthController extends Controller
     }
 
     /**
-     * Proses login
+     * Proses login pengguna.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws ValidationException
      */
     public function login(Request $request)
     {
@@ -47,7 +57,9 @@ class AuthController extends Controller
     }
 
     /**
-     * Menampilkan halaman register
+     * Menampilkan halaman registrasi.
+     *
+     * @return \Illuminate\View\View
      */
     public function showRegisterForm()
     {
@@ -55,7 +67,10 @@ class AuthController extends Controller
     }
 
     /**
-     * Proses register
+     * Proses registrasi pengguna baru.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function register(Request $request)
     {
@@ -85,7 +100,10 @@ class AuthController extends Controller
     }
 
     /**
-     * Proses logout
+     * Proses logout pengguna.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function logout(Request $request)
     {
@@ -98,8 +116,12 @@ class AuthController extends Controller
         return redirect('/');
     }
 
-
-    /* Private Function */
+    /**
+     * Proses login sesuai role menggunakan service terkait.
+     *
+     * @param AuthInterface $authInt
+     * @return \Illuminate\Http\RedirectResponse
+     */
     private function processLogin(AuthInterface $authInt)
     {
         $user = Auth::user();
