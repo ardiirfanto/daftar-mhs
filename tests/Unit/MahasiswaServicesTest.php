@@ -93,4 +93,24 @@ class MahasiswaServicesTest extends TestCase
             'status_skripsi' => 'proposal'
         ]);
     }
+
+    #[Test]
+    public function loginMahasiswa()
+    {
+        // Arrange
+        $user = \App\Models\User::create([
+            'name' => 'Login Student',
+            'email' => 'login@student.com',
+            'password' => bcrypt('password123'),
+            'role_id' => $this->mahasiswaRole->id,
+        ]);
+
+        // Act
+        $response = $this->mahasiswaServices->login($user);
+
+        // Assert
+        $this->assertInstanceOf(RedirectResponse::class, $response);
+        $this->assertEquals(route('mahasiswa.dashboard'), $response->headers->get('Location'));
+        $this->assertEquals('Anda Berhasil Login sebagai Mahasiswa', session('success'));
+    }
 }

@@ -101,7 +101,7 @@ class MahasiswaController extends Controller
      */
     public function downloadDaftarMahasiswa()
     {
-        $downloadServices = new DownloadServices(Auth::user());
-        return $downloadServices->download();
+        $downloadServices = new DownloadServices();
+        return $downloadServices->download('admin');
     }
 }

@@ -12,24 +12,6 @@ use Barryvdh\DomPDF\Facade\Pdf;
  */
 class DownloadServices
 {
-
-    /**
-     * User yang sedang aktif (admin atau mahasiswa).
-     *
-     * @var mixed
-     */
-    public $user;
-
-    /**
-     * Konstruktor DownloadServices.
-     *
-     * @param mixed $user Instance user yang sedang aktif.
-     */
-    public function __construct($user)
-    {
-        $this->user = $user;
-    }
-
     /**
      * Menentukan jenis file PDF yang akan diunduh berdasarkan role user.
      * Jika admin, akan mengunduh daftar seluruh mahasiswa.
@@ -37,16 +19,19 @@ class DownloadServices
      *
      * @return \Illuminate\Http\Response File PDF yang siap diunduh.
      */
-    public function download()
+    public function __call($name, $arguments)
     {
+        if ($name == 'download') {
+            $role = count($arguments) > 1 ? $arguments[0] : $arguments;
+            $user = $arguments[1];
+            return match ($role) {
+                'admin' => $this->downloadDaftarMahasiswa(),
+                'mahasiswa' => $this->downloadDetilMahasiswa($user),
+                default => abort(403, 'Role kamu tidak memenuhi syarat'),
+            };
+        }
 
-        $role = $this->user->role->name;
-
-        return match ($role) {
-            'admin' => $this->downloadDaftarMahasiswa(),
-            'mahasiswa' => $this->downloadDetilMahasiswa(),
-            default => abort(403, 'Role kamu tidak memenuhi syarat'),
-        };
+        return abort(403, 'Method tidak ditemukan');
     }
 
     /**
@@ -70,14 +55,14 @@ class DownloadServices
      *
      * @return \Illuminate\Http\Response File PDF detil mahasiswa.
      */
-    private function downloadDetilMahasiswa()
+    private function downloadDetilMahasiswa($user)
     {
         $mahasiswa = Mahasiswa::with(['user', 'prodi.fakultas'])
-            ->find($this->user->mahasiswa->id); // Mengambil semua detil data mahasiswa
+            ->find($user->mahasiswa->id); // Mengambil semua detil data mahasiswa
         $params = [
             'mahasiswa' => $mahasiswa,
         ];
         $pdf = Pdf::loadView('mahasiswa.download.detilmhs', $params)->setPaper('a4', 'potrait');
-        return $pdf->download('detilmhs_' . $this->user->mahasiswa->nim . '.pdf');
+        return $pdf->download('detilmhs_' . $user->mahasiswa->nim . '.pdf');
     }
 }

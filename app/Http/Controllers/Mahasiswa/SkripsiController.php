@@ -36,7 +36,7 @@ class SkripsiController extends Controller
      */
     public function downloadDetilSkripsi()
     {
-        $downloadServices = new DownloadServices(Auth::user());
-        return $downloadServices->download();
+        $downloadServices = new DownloadServices();
+        return $downloadServices->download('mahasiswa', Auth::user());
     }
 }
