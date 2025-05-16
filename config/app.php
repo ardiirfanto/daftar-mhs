@@ -125,18 +125,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Autoloaded Service Providers
+    | Class Aliases
     |--------------------------------------------------------------------------
     |
-    | The service providers listed here will be automatically loaded on the
-    | request to your application. Feel free to add your own services to
-    | this array to grant expanded functionality to your applications.
+    | This array of class aliases will be registered when this application
+    | is started. Class aliases are "shortcuts" or "nicknames" for commonly
+    | used classes or interfaces. This allows you to use shorter and more
+    | convenient syntax when working with these classes.
     |
     */
 
     'aliases' => [
-        'Auth'=> \Illuminate\Support\Facades\Auth::class,
+        'Auth' => \Illuminate\Support\Facades\Auth::class,
         'Render' => \App\Helpers\Render::class,
+        'Route' => \Illuminate\Support\Facades\Route::class,
     ],
 
 ];

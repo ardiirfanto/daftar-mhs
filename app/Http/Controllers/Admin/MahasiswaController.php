@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Mahasiswa;
+use App\Services\DownloadServices;
+use Illuminate\Container\Attributes\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MahasiswaController extends Controller
 {
@@ -41,10 +44,35 @@ class MahasiswaController extends Controller
         }
 
         $mahasiswa->status_skripsi = $request->status_skripsi;
-        if(isset($request->tanggal_sidang)){
+        if (isset($request->tanggal_sidang)) {
             $mahasiswa->tanggal_sidang = $request->tanggal_sidang;
         }
         $mahasiswa->save();
         return redirect()->back()->with('success', 'Status skripsi berhasil diperbarui.');
+    }
+
+    public function delete($id)
+    {
+        DB::beginTransaction();
+        try {
+            $id = decrypt($id);
+            $mahasiswa = Mahasiswa::find($id);
+            if (!$mahasiswa) {
+                return redirect()->back()->with('error', 'Mahasiswa tidak ditemukan.');
+            }
+            $mahasiswa->user()->delete();
+            $mahasiswa->delete();
+            DB::commit();
+            return redirect()->back()->with('success', 'Data mahasiswa berhasil dihapus.');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menghapus data mahasiswa.');
+        }
+    }
+
+    public function downloadDaftarMahasiswa()
+    {
+        $downloadServices = new DownloadServices(Auth::user()); // Menggunakan dependency injection untuk mendapatkan objek user yang sedang login
+        return $downloadServices->download();
     }
 }

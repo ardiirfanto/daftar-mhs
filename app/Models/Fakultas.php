@@ -6,19 +6,23 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * Model untuk tabel fakultas.
+ * Menyimpan data fakultas dan relasinya dengan prodi.
+ */
 class Fakultas extends Model
 {
     use HasFactory;
 
     /**
-     * The table associated with the model.
+     * Nama tabel yang terkait dengan model ini.
      *
      * @var string
      */
     protected $table = 'fakultas';
 
     /**
-     * The attributes that are mass assignable.
+     * Atribut yang dapat diisi secara massal.
      *
      * @var array<int, string>
      */
@@ -29,7 +33,9 @@ class Fakultas extends Model
     ];
 
     /**
-     * Get the prodi for the fakultas.
+     * Relasi satu ke banyak: Fakultas memiliki banyak Prodi.
+     *
+     * @return HasMany
      */
     public function prodi(): HasMany
     {

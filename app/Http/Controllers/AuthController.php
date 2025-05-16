@@ -7,6 +7,7 @@ use App\Services\AdminServices;
 use App\Services\MahasiswaServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -34,9 +35,9 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             if (Auth::user()->isAdmin()) {
-                $this->processLogin(new AdminServices);
+                return $this->processLogin(new AdminServices);
             } else {
-                $this->processLogin(new MahasiswaServices);
+                return $this->processLogin(new MahasiswaServices);
             }
         }
 
@@ -77,7 +78,7 @@ class AuthController extends Controller
             }
 
             $mahasiswaService = new MahasiswaServices();
-            $mahasiswaService->register($request);
+            return $mahasiswaService->register($request);
         } catch (\Throwable $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
@@ -89,6 +90,7 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         Auth::logout();
+        Session::forget('mahasiswa');
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
@@ -98,10 +100,9 @@ class AuthController extends Controller
 
 
     /* Private Function */
-
     private function processLogin(AuthInterface $authInt)
     {
         $user = Auth::user();
-        $authInt->login($user);
+        return $authInt->login($user);
     }
 }

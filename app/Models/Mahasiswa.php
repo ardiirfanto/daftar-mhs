@@ -6,19 +6,23 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * Model untuk tabel mahasiswa.
+ * Menyimpan data mahasiswa beserta relasi ke user dan prodi.
+ */
 class Mahasiswa extends Model
 {
     use HasFactory;
 
     /**
-     * The table associated with the model.
+     * Nama tabel yang terkait dengan model ini.
      *
      * @var string
      */
     protected $table = 'mahasiswa';
 
     /**
-     * The attributes that are mass assignable.
+     * Atribut yang dapat diisi secara massal.
      *
      * @var array<int, string>
      */
@@ -38,7 +42,9 @@ class Mahasiswa extends Model
     ];
 
     /**
-     * Get the user that owns the mahasiswa.
+     * Relasi ke user yang memiliki mahasiswa ini.
+     *
+     * @return BelongsTo
      */
     public function user(): BelongsTo
     {
@@ -46,7 +52,9 @@ class Mahasiswa extends Model
     }
 
     /**
-     * Get the prodi that owns the mahasiswa.
+     * Relasi ke prodi yang dimiliki mahasiswa ini.
+     *
+     * @return BelongsTo
      */
     public function prodi(): BelongsTo
     {

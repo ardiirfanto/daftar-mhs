@@ -8,14 +8,24 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Class service untuk menangani proses autentikasi dan pendaftaran Mahasiswa,
+ * termasuk pendaftaran skripsi dan logika login.
+ *
+ * extends dari AuthServices dan implements AuthInterface.
+ */
 class MahasiswaServices extends AuthServices implements AuthInterface
 {
-
+    /**
+     * Melakukan login user Mahasiswa dan mengarahkan ke dashboard Mahasiswa.
+     *
+     * @param User $user Instance user yang akan login.
+     * @return RedirectResponse Redirect ke mahasiswa.dashboard dengan pesan sukses.
+     */
     public function login($user): RedirectResponse
     {
         // Fungsi Inheritance dengan AuthServices
@@ -23,10 +33,17 @@ class MahasiswaServices extends AuthServices implements AuthInterface
         $this->setSessionMahasiswa();
 
         return redirect()
-            ->intended('mahasiswa.dashboard')
+            ->route('mahasiswa.dashboard')
             ->with('success', 'Anda Berhasil Login sebagai Mahasiswa');
     }
 
+    /**
+     * Mendaftarkan user Mahasiswa baru, membuat data Mahasiswa beserta data skripsi,
+     * dan melakukan login setelah pendaftaran berhasil.
+     *
+     * @param Request $request Request pendaftaran yang berisi data user dan skripsi.
+     * @return RedirectResponse Redirect ke mahasiswa.dashboard jika sukses, atau kembali dengan error jika gagal.
+     */
     public function register(Request $request): RedirectResponse
     {
         DB::beginTransaction();
@@ -72,7 +89,7 @@ class MahasiswaServices extends AuthServices implements AuthInterface
             $this->setUser($user);
             $this->setSessionMahasiswa();
 
-            return redirect()->intended('mahasiswa.dashboard')
+            return redirect()->route('mahasiswa.dashboard')
                 ->with('success', 'Pendaftaran skripsi berhasil');
         } catch (\Throwable $e) {
             DB::rollback();

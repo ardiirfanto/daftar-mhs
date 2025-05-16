@@ -9,13 +9,17 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * Model untuk tabel user.
+ * Menyimpan data user, autentikasi, dan relasi ke role serta mahasiswa.
+ */
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
+     * Atribut yang dapat diisi secara massal.
      *
      * @var list<string>
      */
@@ -27,7 +31,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * Atribut yang disembunyikan saat serialisasi.
      *
      * @var list<string>
      */
@@ -37,7 +41,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * Mendapatkan atribut yang harus di-cast.
      *
      * @return array<string, string>
      */
@@ -50,7 +54,9 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the role that owns the user.
+     * Relasi ke role yang dimiliki user ini.
+     *
+     * @return BelongsTo
      */
     public function role(): BelongsTo
     {
@@ -58,7 +64,9 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the mahasiswa associated with the user.
+     * Relasi ke mahasiswa yang terkait dengan user ini.
+     *
+     * @return HasOne
      */
     public function mahasiswa(): HasOne
     {
@@ -66,7 +74,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Check if the user has a specific role.
+     * Mengecek apakah user memiliki role tertentu.
      *
      * @param string $roleName
      * @return bool
@@ -77,7 +85,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Check if the user is an admin.
+     * Mengecek apakah user adalah admin.
      *
      * @return bool
      */
@@ -87,7 +95,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Check if the user is a mahasiswa.
+     * Mengecek apakah user adalah mahasiswa.
      *
      * @return bool
      */

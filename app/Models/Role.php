@@ -6,12 +6,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * Model untuk tabel role.
+ * Menyimpan data role dan relasinya dengan user.
+ */
 class Role extends Model
 {
     use HasFactory;
 
     /**
-     * The attributes that are mass assignable.
+     * Atribut yang dapat diisi secara massal.
      *
      * @var array<int, string>
      */
@@ -21,7 +25,9 @@ class Role extends Model
     ];
 
     /**
-     * Get the users for the role.
+     * Relasi satu ke banyak: Role memiliki banyak User.
+     *
+     * @return HasMany
      */
     public function users(): HasMany
     {

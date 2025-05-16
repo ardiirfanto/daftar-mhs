@@ -7,19 +7,23 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * Model untuk tabel prodi.
+ * Menyimpan data program studi dan relasinya dengan fakultas serta mahasiswa.
+ */
 class Prodi extends Model
 {
     use HasFactory;
 
     /**
-     * The table associated with the model.
+     * Nama tabel yang terkait dengan model ini.
      *
      * @var string
      */
     protected $table = 'prodi';
 
     /**
-     * The attributes that are mass assignable.
+     * Atribut yang dapat diisi secara massal.
      *
      * @var array<int, string>
      */
@@ -31,7 +35,9 @@ class Prodi extends Model
     ];
 
     /**
-     * Get the fakultas that owns the prodi.
+     * Relasi ke fakultas yang memiliki prodi ini.
+     *
+     * @return BelongsTo
      */
     public function fakultas(): BelongsTo
     {
@@ -39,7 +45,9 @@ class Prodi extends Model
     }
 
     /**
-     * Get the mahasiswa for the prodi.
+     * Relasi satu ke banyak: Prodi memiliki banyak Mahasiswa.
+     *
+     * @return HasMany
      */
     public function mahasiswa(): HasMany
     {

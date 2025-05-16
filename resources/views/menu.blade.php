@@ -2,15 +2,26 @@
     <div class="max-w-7xl flex flex-row justify-between mx-auto py-6 px-4 sm:px-6 lg:px-8">
         @if (Auth::user()->role->name == 'admin')
             <div class="flex flex-row w-full gap-2">
-                <a href="{{ route('admin.dashboard') }}" class="text-sm text-white font-semibold bg-gray-400 hover:bg-gray-600 py-2 px-2 rounded-lg">
+                <a href="{{ route('admin.dashboard') }}"
+                    class="text-sm text-white font-semibold bg-gray-400 hover:bg-gray-600 py-2 px-2 rounded-lg">
                     Dashboard
                 </a>
-                <a href="{{ route('admin.mahasiswa') }}" class="text-sm text-white font-semibold bg-gray-400 hover:bg-gray-600 py-2 px-2 rounded-lg">
+                <a href="{{ route('admin.mahasiswa') }}"
+                    class="text-sm text-white font-semibold bg-gray-400 hover:bg-gray-600 py-2 px-2 rounded-lg">
                     Data Mahasiswa
                 </a>
             </div>
         @else
-
+            <div class="flex flex-row w-full gap-2">
+                <a href="{{ route('mahasiswa.dashboard') }}"
+                    class="text-sm text-white font-semibold bg-gray-400 hover:bg-gray-600 py-2 px-2 rounded-lg">
+                    Dashboard
+                </a>
+                <a href="{{ route('mahasiswa.skripsi') }}"
+                    class="text-sm text-white font-semibold bg-gray-400 hover:bg-gray-600 py-2 px-2 rounded-lg">
+                    Detil Pendaftaran Skripsi
+                </a>
+            </div>
         @endif
 
         {{-- Alert --}}
