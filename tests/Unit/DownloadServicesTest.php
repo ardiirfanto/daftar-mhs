@@ -77,7 +77,7 @@ class DownloadServicesTest extends TestCase
             response('', 200, ['content-disposition' => 'attachment; filename="daftarmhs.pdf"'])
         );
         $service = new DownloadServices();
-        $service->download($this->adminUser);
+        $service->download('admin');
         $this->assertEquals($flag, 1);
     }
 
@@ -94,7 +94,7 @@ class DownloadServicesTest extends TestCase
         );
 
         $service = new DownloadServices($this->mahasiswaUser);
-        $service->download($this->mahasiswaUser);
+        $service->download('mahasiswa',$this->mahasiswaUser);
         $this->assertEquals($flag, 1);
     }
 }

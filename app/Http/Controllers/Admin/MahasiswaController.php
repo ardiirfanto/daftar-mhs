@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Mahasiswa;
+use App\Models\User;
 use App\Services\DownloadServices;
-use Illuminate\Container\Attributes\DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 /**
  * Controller untuk manajemen data mahasiswa oleh admin.
@@ -84,8 +84,9 @@ class MahasiswaController extends Controller
             if (!$mahasiswa) {
                 return redirect()->back()->with('error', 'Mahasiswa tidak ditemukan.');
             }
-            $mahasiswa->user()->delete();
             $mahasiswa->delete();
+            $user = User::find($mahasiswa->user_id);
+            $user->delete();
             DB::commit();
             return redirect()->back()->with('success', 'Data mahasiswa berhasil dihapus.');
         } catch (\Exception $e) {

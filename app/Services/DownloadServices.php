@@ -22,8 +22,8 @@ class DownloadServices
     public function __call($name, $arguments)
     {
         if ($name == 'download') {
-            $role = count($arguments) > 1 ? $arguments[0] : $arguments;
-            $user = $arguments[1];
+            $role =  $arguments[0];
+            $user = count($arguments) > 1 ? $arguments[1] : '';
             return match ($role) {
                 'admin' => $this->downloadDaftarMahasiswa(),
                 'mahasiswa' => $this->downloadDetilMahasiswa($user),
@@ -45,8 +45,8 @@ class DownloadServices
         $params = [
             'mahasiswa' => $mahasiswa,
         ];
-        $pdf = Pdf::loadView('admin.download.daftarmhs', $params)->setPaper('a4', 'landscape');;
-
+        $pdf = Pdf::loadView('admin.download.daftarmhs', $params)
+            ->setPaper('a4', 'landscape');
         return $pdf->download('daftarmhs.pdf');
     }
 
